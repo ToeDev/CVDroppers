@@ -17,6 +17,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.*;
@@ -78,6 +79,21 @@ public class CVDroppers extends JavaPlugin implements Listener {
         for(ProtectedRegion region : set) {
             if(dropperRegions.get(player.getWorld().getName()).contains(region.getId().toLowerCase())) {
                 player.setHealth(0);
+                return;
+            }
+        }
+    }
+
+    @EventHandler
+    public void onPlayerDeath(PlayerDeathEvent event) {
+        Player player = event.getEntity();
+        if(!dropperRegions.containsKey(player.getWorld().getName())) return;
+        RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
+        RegionQuery query = container.createQuery();
+        ApplicableRegionSet set = query.getApplicableRegions(BukkitAdapter.adapt(player.getLocation()));
+        for(ProtectedRegion region : set) {
+            if(dropperRegions.get(player.getWorld().getName()).contains(region.getId().toLowerCase())) {
+                event.setDeathMessage(null);
                 return;
             }
         }
