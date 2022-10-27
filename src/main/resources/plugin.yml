@@ -1,0 +1,11 @@
+name: CVDroppers
+main: org.cubeville.cvdroppers.CVDroppers
+authors: [ToeMan_]
+version: 1.18
+api-version: 1.16
+depend: [WorldEdit,WorldGuard]
+
+commands:
+  cvdroppers:
+    aliases: droppers
+    permission: cvdroppers.admin
